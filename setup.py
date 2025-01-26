@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="stringpairfinder",
-    version="1.0.0",
+    version="2.0.1",
     description="Package designed to match strings by similarity",
     author="Antoine PINTO",
     author_email="antoine.pinto1@outlook.fr",
@@ -13,9 +13,9 @@ setup(
     license_file="LICENSE",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/AntoinePinto/string-pair-finder",
+    url="https://github.com/AntoinePinto/stringpairfinder",
     project_urls={
-        "Source Code": "https://github.com/AntoinePinto/string-pair-finder",
+        "Source Code": "https://github.com/AntoinePinto/stringpairfinder",
     },
     keywords=["string", "string matching", "algorithm", "similarity"],
     packages=find_packages(),

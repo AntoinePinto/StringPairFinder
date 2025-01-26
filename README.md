@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1 align="center">
-  <a><img src="./img/logo.png" width="300"></a>
+  <a><img src="https://github.com/AntoinePinto/StringPairFinder/blob/master/img/logo.png?raw=true" width="300"></a>
 </h1>
 
 ![Static Badge](https://img.shields.io/badge/python->3.7-blue)
@@ -14,16 +14,14 @@
 StringPairFinder is a Python package designed to simplify the process of finding similarities between strings.
 
 <p align="center">
-  <img src="https://github.com/AntoinePinto/string-pair-finder/blob/master/img/problematic.png?raw=true" alt="drawing" width="400"/>
+  <img src="https://github.com/AntoinePinto/StringPairFinder/blob/master/img/problematic.png?raw=true" alt="drawing" width="600"/>
 </p>
 
-## Installation
+### Installation
 
 ```python
 pip install stringpairfinder
 ```
-
-## Usage
 
 ### Computing String Similarity
 
@@ -80,13 +78,13 @@ The similarity search between two strings consists of a matrix comparison of eac
 1. The first step is to construct a table $T$ containing the first string in the column and the second in the row. The value of a cell is 1 if the character in the row is the same as the one in the column, and 0 otherwise.
 
 <p align="center">
-  <img src="https://github.com/AntoinePinto/string-pair-finder/blob/master/img/step1.png?raw=true" alt="drawing" width="300"/>
+  <img src="https://github.com/AntoinePinto/StringPairFinder/blob/master/img/step1.png?raw=true" alt="drawing" width="300"/>
 </p>
 
 2. The second step aims at highlighting the fact that several characters correspond consecutively. Thus, for each row $i$ and column $j$, if cell $T[i-1, j-1] > 0$, then $T[i, j]$ is twice the value of $T[i-1, j-1]$.
 
 <p align="center">
-  <img src="https://github.com/AntoinePinto/string-pair-finder/blob/master/img/step2.png?raw=true" alt="drawing" width="300"/>
+  <img src="https://github.com/AntoinePinto/StringPairFinder/blob/master/img/step2.png?raw=true" alt="drawing" width="300"/>
 </p>
 
 3. The third step is simply to calculate the similarity score, equal to the sum of all the cells in the $T$ divided by the size of the table.
