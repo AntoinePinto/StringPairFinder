@@ -1,16 +1,21 @@
-# StringPairFinder
+<div align="center">
+
+<h1 align="center">
+  <a><img src="./img/logo.png" width="300"></a>
+</h1>
+
+![Static Badge](https://img.shields.io/badge/python->3.7-blue)
+![GitHub License](https://img.shields.io/github/license/AntoinePinto/StringPairFinder)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/stringpairfinder)
+![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
+
+</div>
 
 StringPairFinder is a Python package designed to simplify the process of finding similarities between strings.
 
 <p align="center">
   <img src="https://github.com/AntoinePinto/string-pair-finder/blob/master/img/problematic.png?raw=true" alt="drawing" width="400"/>
 </p>
-
-## Evaluation
-
-Evaluation on a dataset of 1000 observations (see `notebooks/1_evaluation.ipynb`) :
-* [FuzzyWuzzy](https://github.com/seatgeek/thefuzz) algorithm : 85.2 % of success rate
-* StringPairFinder algorithm : 94.0 % of success rate
 
 ## Installation
 
@@ -38,7 +43,7 @@ spf.get_similarity("Munich", "Munchen")
 spf.get_nearest_string(
     string="Naples",
     string_list=["Munchen", "Napoli", "Warszawa"]
-    )
+)
 ```
 
 ```python
@@ -51,14 +56,22 @@ spf.get_nearest_string(
 spf.match_strings(
     source_strings=["Naples", "Munich", "Warsaw"],
     target_strings=["Munchen", "Napoli", "Warszawa"]
-    )
+)
 ```
 
 ```python
->> {'Naples': 'Napoli',
-    'Munich': 'Munchen',
-    'Warsaw': 'Warszawa'}
+>>  {
+        'Naples': 'Napoli',
+        'Munich': 'Munchen',
+        'Warsaw': 'Warszawa'
+    }
 ```
+
+## Evaluation
+
+Evaluation on a dataset of 1000 observations (see `notebooks/StringPairFinder vs FuzzyWuzzy.ipynb`) :
+* [FuzzyWuzzy](https://github.com/seatgeek/thefuzz) algorithm : 85.2 % of success rate
+* StringPairFinder algorithm : 94.0 % of success rate
 
 ## What is the algorithm ?
 
