@@ -1,11 +1,13 @@
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
 import numpy as np
 
-def clean_string(string):
+
+def clean_string(string: str) -> str:
     """
     Remove special characters and convert a string to lowercase.
-    
+
     Parameters
     ----------
     string : str
@@ -16,12 +18,15 @@ def clean_string(string):
     str
         Cleaned string.
     """
-    return re.sub(r'\W+', ' ', string).lower()
+    return re.sub(r"\W+", " ", string).lower()
 
-def get_similarity(string1, string2):
+def get_similarity(
+        string1: str,
+        string2: str
+    ) -> float:
     """
     Calculate similarity between two strings.
-    
+
     Parameters
     ----------
     string1 : str
@@ -35,10 +40,19 @@ def get_similarity(string1, string2):
         Calculated similarity between string1 and string2.
     """
     string1_cleaned, string2_cleaned = clean_string(string1), clean_string(string2)
-    
+
     # Initialize a 2D array for character comparisons
-    comparison_matrix = np.array([[int(char1 == char2) for char1 in string1_cleaned] for char2 in string2_cleaned], dtype=np.int32)
-    
+    comparison_matrix = np.array(
+        [
+            [
+                int(char1 == char2)
+                for char1 in string1_cleaned
+            ]
+            for char2 in string2_cleaned
+        ],
+        dtype=np.int32
+    )
+
     # Update matrix to account for consecutive character matches
     for i in range(1, comparison_matrix.shape[0]):
         for j in range(1, comparison_matrix.shape[1]):
@@ -50,7 +64,10 @@ def get_similarity(string1, string2):
 
     return similarity_score
 
-def get_nearest_string(string, string_list):
+def get_nearest_string(
+        string: str,
+        string_list: list[str]
+    ) -> str:
     """
     Find the most similar string in a list to the given string.
 
@@ -66,13 +83,24 @@ def get_nearest_string(string, string_list):
     str
         The most similar string from the list.
     """
-    _, max_index = max((get_similarity(string, option), index) for index, option in enumerate(string_list))
-    return string_list[max_index]
 
-def match_strings(source_strings, target_strings, n_jobs=None):
+    similarities = {}
+    for option in string_list:
+        similarities[option] = get_similarity(string, option)
+
+    nearest_string = max(similarities, key=lambda x: similarities[x])
+
+    return nearest_string
+
+def match_strings(
+        source_strings: list[str],
+        target_strings: list[str],
+        n_jobs: int = 1
+    ) -> dict[str, str]:
     """
-    Map each string in the source list to its most similar string in the target list, optionally in parallel.
-    
+    Map each string in the source list to its most similar string in the target list,
+    optionally in parallel.
+
     Parameters
     ----------
     source_strings : list of str
@@ -81,25 +109,35 @@ def match_strings(source_strings, target_strings, n_jobs=None):
         Target list of strings.
     n_jobs : int, optional
         Number of parallel jobs. Sequential if None or 1.
-        
+
     Returns
     -------
     dict
         Mapping of each source string to its most similar target string.
     """
-    mapping = {}
-    
-    def map_string_to_similar(source_string):
-        return source_string, get_nearest_string(source_string, target_strings)
 
-    if n_jobs is None or n_jobs == 1:
+    mapping = {}
+    if n_jobs == 1:
+
         for string in source_strings:
-            mapping[string] = get_nearest_string(string, target_strings)
+            mapping[string] = get_nearest_string(
+                string=string,
+                string_list=target_strings
+            )
+
     else:
+
         with ThreadPoolExecutor(max_workers=n_jobs) as executor:
-            futures = {executor.submit(map_string_to_similar, string): string for string in source_strings}
-            for future in as_completed(futures):
-                source_string, similar_string = future.result()
-                mapping[source_string] = similar_string
+
+            for string in source_strings:
+
+                mapping[string] = executor.submit(
+                    get_nearest_string,
+                    string=string,
+                    string_list=target_strings
+                )
+
+            for string in as_completed(mapping):
+                mapping[string] = mapping[string].result()
 
     return mapping
